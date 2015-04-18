@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">MyProject</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_about">About</string>
+    <string name="title_activity_edit">EditActivity</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="add_title">Add</string>
+    <string name="action_warning_list">Warning List</string>
+</resources>
