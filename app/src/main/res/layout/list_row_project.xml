@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+
+    <!-- Project Name -->
+    <TextView
+        android:id="@+id/project_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17dp"
+        android:text="Project Name"
+        android:textStyle="bold" />
+
+    <!-- Project Address -->
+    <TextView
+        android:id="@+id/project_description"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/project_name"
+        android:layout_marginTop="1dip"
+        android:text="Description"
+        android:textSize="15dp" />
+
+    <!-- Project Telephone -->
+    <TextView
+        android:id="@+id/project_due"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:textColor="#888888"
+        android:text="Due Date"
+        android:textSize="12dp" />
+
+</RelativeLayout>
