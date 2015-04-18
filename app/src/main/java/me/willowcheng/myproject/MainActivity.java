@@ -20,6 +20,7 @@ import java.util.List;
 public class MainActivity extends ActionBarActivity {
 
     private final String TAG = "MainActivity";
+    private final DatabaseHandler databaseHandler = new DatabaseHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,27 +30,6 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "Set content");
 
-        final DatabaseHandler databaseHandler = new DatabaseHandler(this);
-        for (int dummy_i = 0; dummy_i < 3; dummy_i++) {
-            databaseHandler.addProject(new ProjectItem(dummy_i , "Name" + String.valueOf(dummy_i),
-                    "Description" + String.valueOf(dummy_i),
-                    "Due Date" + String.valueOf(dummy_i)));
-        }
-        Log.d(TAG, "Add items to database");
-
-        ListView projectListView = (ListView) findViewById(R.id.project_list);
-        final List<ProjectItem> projectItemList = databaseHandler.getAllProjectItems();
-        final ProjectAdapter adapter = new ProjectAdapter(this, projectItemList);
-        projectListView.setAdapter(adapter);
-        projectListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                databaseHandler.deleteProject(projectItemList.get(i));
-                projectItemList.remove(i);
-                adapter.notifyDataSetChanged();
-                return true;
-            }
-        });
     }
 
 
@@ -90,4 +70,38 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ListView projectListView = (ListView) findViewById(R.id.project_list);
+        final List<ProjectItem> projectItemList = databaseHandler.getAllProjectItems();
+        final ProjectAdapter adapter = new ProjectAdapter(this, projectItemList);
+        projectListView.setAdapter(adapter);
+        projectListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, EditActivity.class);
+                intent.putExtra("id", projectItemList.get(i).getId());
+                intent.putExtra("Course Title", projectItemList.get(i).getName());
+                intent.putExtra("Course Number", projectItemList.get(i). getCourseNumber());
+                intent.putExtra("Instructor", projectItemList.get(i).getInstructor());
+                intent.putExtra("Project Number", projectItemList.get(i).getProjectNumber());
+                intent.putExtra("Project Description", projectItemList.get(i).getProjectNumber());
+                intent.putExtra("Due Date", projectItemList.get(i).getDue());
+                startActivity(intent);
+            }
+        });
+        projectListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                databaseHandler.deleteProject(projectItemList.get(i));
+                projectItemList.remove(i);
+                adapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+    }
+
 }
