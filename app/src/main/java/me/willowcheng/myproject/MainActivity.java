@@ -3,33 +3,53 @@ package me.willowcheng.myproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 import com.mikepenz.iconics.typeface.FontAwesome;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
 
+    private final String TAG = "MainActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
+
         setContentView(R.layout.activity_main);
-        List<ProjectItem> projectItemList = new ArrayList<>();
-        for (int dummy_i = 0; dummy_i < 7; dummy_i++) {
-            projectItemList.add(new ProjectItem("Name" + String.valueOf(dummy_i),
+        Log.d(TAG, "Set content");
+
+        final DatabaseHandler databaseHandler = new DatabaseHandler(this);
+        for (int dummy_i = 0; dummy_i < 3; dummy_i++) {
+            databaseHandler.addProject(new ProjectItem(dummy_i , "Name" + String.valueOf(dummy_i),
                     "Description" + String.valueOf(dummy_i),
                     "Due Date" + String.valueOf(dummy_i)));
         }
+        Log.d(TAG, "Add items to database");
+
         ListView projectListView = (ListView) findViewById(R.id.project_list);
-        ProjectAdapter adapter = new ProjectAdapter(this, projectItemList);
+        final List<ProjectItem> projectItemList = databaseHandler.getAllProjectItems();
+        final ProjectAdapter adapter = new ProjectAdapter(this, projectItemList);
         projectListView.setAdapter(adapter);
+        projectListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                databaseHandler.deleteProject(projectItemList.get(i));
+                projectItemList.remove(i);
+                adapter.notifyDataSetChanged();
+                return true;
+            }
+        });
     }
 
 

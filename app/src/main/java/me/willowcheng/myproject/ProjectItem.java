@@ -4,6 +4,12 @@ package me.willowcheng.myproject;
  * Created by willowcheng on 4/18/2015.
  */
 public class ProjectItem {
+
+    private int id;
+    private String name;
+    private String description;
+    private String due;
+
     public String getName() {
         return name;
     }
@@ -28,11 +34,16 @@ public class ProjectItem {
         this.due = due;
     }
 
-    private String name;
-    private String description;
-    private String due;
+    public int getId() {
+        return id;
+    }
 
-    public ProjectItem (String name, String description, String due) {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public ProjectItem (int id, String name, String description, String due) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.due = due;
